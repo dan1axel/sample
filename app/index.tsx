@@ -1,11 +1,10 @@
-import { Platform, Text, View, Image, Dimensions} from "react-native";
-import colors from "../shared/color";
+import { useAuth, useSSO, useUser } from "@clerk/clerk-expo";
+import * as AuthSession from 'expo-auth-session';
+import { useRouter } from "expo-router";
+import * as WebBrowser from 'expo-web-browser';
 import { useCallback, useEffect } from "react";
-import { useAuth } from "@clerk/clerk-expo";
-import * as WebBrowser from 'expo-web-browser'
-import * as AuthSession from 'expo-auth-session'
-import { useSSO } from '@clerk/clerk-expo'
-import { router } from "expo-router"
+import { Dimensions, Image, Platform, Text, TouchableOpacity, View } from "react-native";
+import colors from "../shared/color";
 
 
 
@@ -31,6 +30,11 @@ export default function Index() {
 
 
 const {isSignedIn} = useAuth()
+
+const router  = useRouter()
+const {user} = useUser()
+console.log(user?.primaryEmailAddress?.emailAddress)
+
 useEffect(() =>{
   if(isSignedIn){
 
@@ -106,15 +110,16 @@ useEffect(() =>{
         }}>
         Edit app/index.tsx to edit this screen.</Text>
 
-        <View
+        <TouchableOpacity
         style={{
           marginTop: 20,
           width: "25%",
           padding: 15,
           backgroundColor: colors.primary,
           borderRadius: 5,
-        }}>
+        }}
 
+          onPress={onPress}>
           <Text
           style={{
             textAlign: "center", color: colors.text,
@@ -122,8 +127,7 @@ useEffect(() =>{
             Get Started!
 
           </Text>
-
-        </View>
+        </TouchableOpacity>
     </View>
   );
 }
